@@ -1,5 +1,9 @@
 # aixcript-hackathon-frontend
 
+本番環境
+
+- https://hackathon-sandbox-389814.web.app/
+
 ## Project setup
 ```
 npm install
