@@ -1,18 +1,25 @@
 <template>
   <div class="bg-glass">
-    <h2 class="title-underline text-center text-white text-xl mt-2.5">提案履歴</h2>
+    <h2 class="title-underline text-center text-white text-xl mt-2.5">
+      販売履歴
+    </h2>
     <div class="dataset-contents horizontal-list">
-      <div 
-        v-if="userDatasets.length === 0"
-        class="text-white p-5 text-center">
+      <div
+        v-if="userSellDatasets.length === 0"
+        class="text-white p-5 text-center"
+      >
         <p>
-            提案の履歴がありません。<br>
-            ぜひ提案をしてみてください！
+          データセットを販売した履歴がありません<br />
+          ぜひデータセットを販売してみましょう！
         </p>
-        <img class="w-full img-to-display-if-not" src="@/assets/img/noDatasetImage.png" alt="提案がないときの画像">
+        <img
+          class="w-full img-to-display-if-not"
+          src="@/assets/img/noDatasetImage.png"
+          alt="提案がないときの画像"
+        />
       </div>
       <div
-        v-for="dataset in userDatasets"
+        v-for="dataset in userSellDatasets"
         :key="dataset.index"
         class="p-3 item"
       >
@@ -20,20 +27,19 @@
           :datasetId="dataset.datasetId"
           :title="dataset.title"
           :description="dataset.description"
-          :targetAmount="dataset.targetAmount"
-          :datasetStatus="dataset.datasetStatus"
-          :fundraisingCondition="dataset.datasetFundraisingCondition"
+          :fileName="dataset.fileName"
+          :price="dataset.price"
+          :datasetOwnType="dataset.datasetOwnType"
+          :tags="dataset.tags"
           :createdAt="dataset.createdAt"
-          :voteList="dataset.votes"
         />
       </div>
     </div>
   </div>
 </template>
 
-
 <script>
-import DatasetCards from "@/components/mypage/MyDatasetHistoryCard.vue";
+import DatasetCards from "@/components/common/DatasetCards.vue";
 
 export default {
   name: "MyDataset",
@@ -51,28 +57,20 @@ export default {
       return this.$store.getters["userStore/detail"];
     },
     datasetCount() {
-      if (!this.detail.datasets) {
+      if (!this.detail.sellDatasets) {
         return 0;
       }
-      return this.detail.datasets.length;
+      return this.detail.sellDatasets.length;
     },
-    datasetVoteCount() {
-      if (!this.detail.datasetVotes) {
-        return 0;
-      }
-      return this.detail.datasetVotes.length;
-    },
-    userDatasets() {
-      if (this.detail.datasets === undefined) return [];
-      return this.detail.datasets;
+    userSellDatasets() {
+      if (this.datasetCount === 0) return [];
+      return this.detail.sellDatasets;
     },
   },
   created() {
-    // メソッドを実行する
     this.getUserDetail();
   },
   methods: {
-    // storeのactionsをたたきにいく
     getUserDetail() {
       this.$store.dispatch("userStore/getDetail", this.token).then(() => {});
     },
