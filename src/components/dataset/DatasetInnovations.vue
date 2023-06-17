@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="validation-result-area">
-        <div>
+        <div class="p-3">
           <h3>検出されたタグ</h3>
           <div>{{ validateResult.bestGuessLabels }}</div>
         </div>
@@ -106,7 +106,7 @@
       </div>
     </div>
 
-    <div class="form-item">
+    <div class="form-item mt-5">
       <p class="form-item-label is-msg">
         <span class="form-item-label-required">必須</span>説明（300字以内）
       </p>

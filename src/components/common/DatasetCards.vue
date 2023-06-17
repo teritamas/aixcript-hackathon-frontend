@@ -1,13 +1,10 @@
 <template>
   <div
-    class="w-full max-w-sm bg-white border border-gray-200 rounded-sm shadow dark:bg-gray-800 dark:border-gray-700"
+    class="w-full max-w-sm glass bg-white border border-gray-200 rounded-sm shadow dark:bg-gray-800 dark:border-gray-700"
   >
-    <!--<router-link
-      :to="{ name: 'datasetDetail', params: { datasetId: datasetId } }"
-    >-->
     <div class="dataset-status-badge-area dataset-card-img h-50 w-auto">
       <img
-        class="rounded-t-sm"
+        class="rounded-t-lg"
         alt="product image"
         :src="thumbnailImageUrl"
         @error="imageError = true"
@@ -22,22 +19,30 @@
     >
       {{ title }}
     </h4>
-    <div class="pt-1 px-5">タグ: {{ tags }}</div>
+    <div class="pt-1 px-5">
+      <span
+        v-for="tag in tags"
+        :key="tag"
+        class="bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300"
+        >{{ tag }}</span
+      >
+    </div>
     <div class="pt-1 px-5">
       <div class="flex justify-between">
-        <div class="text-gray-700 text-bold mb-2">
+        <div class="text-gray-700 text-bold mb-1">
           金額
           <span class="text-lg font-bold">{{ price }}</span>
           円
         </div>
       </div>
     </div>
-    <!--</router-link>-->
-    <purchased-comment-list
-      v-if="purchasedUsers"
-      :purchasedUsers="purchasedUsers"
-    >
-    </purchased-comment-list>
+    <div class="px-5 mb-3">
+      <PurchasedCommentList
+        v-if="purchasedUsers"
+        :purchasedUsers="purchasedUsers"
+      >
+      </PurchasedCommentList>
+    </div>
   </div>
 </template>
 
@@ -70,7 +75,6 @@ export default {
   computed: {
     thumbnailImageUrl() {
       let fileName = this.fileName.substr(0, this.fileName.indexOf("."));
-      console.log(fileName);
       return this.imageError
         ? this.defaultImage
         : `${process.env.VUE_APP_API_ENDPOINT}dataset/${fileName}/thumbnail`;
@@ -86,5 +90,9 @@ export default {
 }
 .dataset-status-badge-area {
   position: relative;
+}
+
+.glass {
+  background: white;
 }
 </style>
