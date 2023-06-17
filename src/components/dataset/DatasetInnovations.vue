@@ -184,7 +184,6 @@ export default {
         .dispatch("datasetStore/validateDataset", this.newDataset)
         .then(() => {});
     },
-
     registerDataset() {
       this.$store
         .dispatch("datasetStore/registerDataset", this.newDataset)
