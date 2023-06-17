@@ -43,8 +43,33 @@
       </div>
       <div class="validation-result-area">
         <div class="p-3">
+          <h2>
+            AIによる投稿可否
+            <span
+              class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300"
+              v-if="isForbiddenFromAiJudgment"
+              >禁止</span
+            >
+            <span
+              class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300"
+              v-else-if="isAlertFromAiJudgment"
+              >注意</span
+            >
+            <span
+              class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
+              v-else
+              >可能</span
+            >
+          </h2>
           <h3>検出されたタグ</h3>
-          <div>{{ validateResult.bestGuessLabels }}</div>
+          <div class="pt-1 px-5">
+            <span
+              v-for="tag in validateResult.tags"
+              :key="tag"
+              class="bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300"
+              >{{ tag }}</span
+            >
+          </div>
         </div>
 
         <div class="bg-red-100 rounded-lg shadow-lg p-6">
@@ -52,8 +77,8 @@
           <div v-if="validateResult.fullMathUrl.length === 0">なし: OK</div>
           <div v-else class="grid grid-cols-3 justify-items-center">
             <div
-              class="justify-items-center"
-              v-for="(url, index) in validateResult.fullMathUrl"
+              class="justify-items-center text-center"
+              v-for="url in validateResult.fullMathUrl"
               :key="url"
             >
               <img
@@ -61,7 +86,12 @@
                 alt="image"
                 class="rounded-lg shadow-lg h-auto w-24"
               />
-              <a :href="url">一致した画像.{{ index }}</a>
+              <a
+                class="no-underline hover:underline"
+                target="_blank"
+                :href="url"
+                >詳細を見る</a
+              >
             </div>
           </div>
         </div>
@@ -71,8 +101,8 @@
           <div v-if="validateResult.partialMathUrls.length === 0">なし: OK</div>
           <div class="grid grid-cols-3 justify-items-center">
             <div
-              class="justify-items-center"
-              v-for="(url, index) in validateResult.partialMathUrls"
+              class="justify-items-center text-center"
+              v-for="url in validateResult.partialMathUrls"
               :key="url"
             >
               <img
@@ -80,7 +110,12 @@
                 alt="image"
                 class="rounded-lg shadow-lg h-auto w-24"
               />
-              <a :href="url">部分一致した画像.{{ index }}</a>
+              <a
+                class="no-underline hover:underline"
+                target="_blank"
+                :href="url"
+                >詳細を見る</a
+              >
             </div>
           </div>
         </div>
@@ -90,8 +125,8 @@
           <div v-if="validateResult.similarUrls.length === 0">なし: OK</div>
           <div v-else class="grid grid-cols-3 justify-items-center">
             <div
-              class="justify-items-center"
-              v-for="(url, index) in validateResult.similarUrls"
+              class="justify-items-center text-center"
+              v-for="url in validateResult.similarUrls"
               :key="url"
             >
               <img
@@ -99,7 +134,12 @@
                 alt="image"
                 class="rounded-lg shadow-lg h-auto w-24"
               />
-              <a :href="url">類似した画像.{{ index }}</a>
+              <a
+                class="no-underline hover:underline"
+                target="_blank"
+                :href="url"
+                >詳細を見る</a
+              >
             </div>
           </div>
         </div>
@@ -108,11 +148,14 @@
 
     <div class="form-item mt-5">
       <p class="form-item-label is-msg">
-        <span class="form-item-label-required">必須</span>説明（300字以内）
+        <span class="form-item-label-required">任意</span>説明（300字以内）
       </p>
       <textarea
         v-model="newDataset.description"
         class="form-item-textarea-on-dataset"
+        placeholder="画像の説明を300字以内で入力してください
+例）この画像は○○というコンセプトでxxを描いた作品です。
+例）この画像は○○という場所で撮影した画像です。"
       ></textarea>
     </div>
 
@@ -144,6 +187,14 @@ export default {
     },
     validateResult() {
       return this.$store.getters["datasetStore/validateResult"];
+    },
+    isForbiddenFromAiJudgment() {
+      //  AIによる判定が禁止されている場合はアラートを出す
+      return this.validateResult.fullMathUrl.length !== 0 ? true : false;
+    },
+    isAlertFromAiJudgment() {
+      // 部分一致した画像がある場合はアラートを出す
+      return this.validateResult.partialMathUrls.length !== 0 ? true : false;
     },
   },
   validations() {
