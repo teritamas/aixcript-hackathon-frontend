@@ -57,7 +57,7 @@ export default {
     getDatasetList(state) {
       const client = applyCaseMiddleware(axios.create());
       let termRequestUri = process.env.VUE_APP_API_ENDPOINT + "dataset";
-      if( state.getters.token !== ""){
+      if (state.getters.token !== "") {
         termRequestUri += `?user_id=${state.getters.token}`;
       }
       return client
@@ -123,24 +123,17 @@ export default {
       state.commit("setDatasetAttachmentFile", commit);
     },
     registerDataset(state, commit) {
+      console.log(commit);
       const termRequestUri = process.env.VUE_APP_API_ENDPOINT + "dataset";
       const client = applyCaseMiddleware(axios.create());
       const form = new FormData();
-      const newDataset = commit.newDataset;
       // jsonにしたためapplyCaseMiddlewareで変換されなかったのでべた書き
       const request = {
-        title: newDataset.title,
-        description: newDataset.description,
-        dataset_phase: newDataset.datasetPhase,
-        is_recruiting_teammates: newDataset.isRecruitingTeammates,
-        other_contents: newDataset.otherContents,
-        tags: [],
-        user_id: newDataset.userId,
-        slack_notification_channels: ["string"],
+        description: commit.description,
+        user_id: state.getters.token,
       };
       form.append("request", JSON.stringify(request));
       form.append("file", commit.file);
-      state.commit("setRegisteredDatasetId", "");
       return client
         .post(termRequestUri, form, {
           headers: {
