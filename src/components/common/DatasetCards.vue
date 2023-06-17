@@ -33,7 +33,10 @@
       </div>
     </div>
     <!--</router-link>-->
-    <purchased-comment-list :purchasedUsers="purchasedUsers">
+    <purchased-comment-list
+      v-if="purchasedUsers"
+      :purchasedUsers="purchasedUsers"
+    >
     </purchased-comment-list>
   </div>
 </template>
@@ -61,8 +64,6 @@ export default {
     fileName: String,
     price: Number,
     datasetOwnType: String,
-    createdAt: String,
-    updatedAt: String,
     tags: Array,
     purchasedUsers: Array,
   },

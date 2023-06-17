@@ -1,25 +1,25 @@
 <template>
   <div class="bg-glass">
     <h2 class="title-underline text-center text-white text-xl mt-2.5">
-      販売履歴
+      購入履歴
     </h2>
     <div class="dataset-contents horizontal-list">
       <div
-        v-if="userSellDatasets.length === 0"
+        v-if="userPurchaseDatasets.length === 0"
         class="text-white p-5 text-center"
       >
         <p>
-          データセットを販売した履歴がありません<br />
-          ぜひデータセットを販売してみましょう！
+          データセットを購入した履歴がありません<br />
+          早速データセットを購入してみましょう！
         </p>
         <img
           class="w-full img-to-display-if-not"
           src="@/assets/img/noDatasetImage.png"
-          alt="提案がないときの画像"
+          alt="購入がないときの画像"
         />
       </div>
       <div
-        v-for="dataset in userSellDatasets"
+        v-for="dataset in userPurchaseDatasets"
         :key="dataset.index"
         class="p-3 item"
       >
@@ -42,7 +42,7 @@
 import DatasetCards from "@/components/common/DatasetCards.vue";
 
 export default {
-  name: "MyDataset",
+  name: "MyPuchsedDatasets",
   components: {
     DatasetCards,
   },
@@ -51,14 +51,14 @@ export default {
   },
   computed: {
     datasetCount() {
-      if (!this.detail.sellDatasets) {
+      if (!this.detail.purchaseDatasets) {
         return 0;
       }
-      return this.detail.sellDatasets.length;
+      return this.detail.purchaseDatasets.length;
     },
-    userSellDatasets() {
+    userPurchaseDatasets() {
       if (this.datasetCount === 0) return [];
-      return this.detail.sellDatasets;
+      return this.detail.purchaseDatasets;
     },
   },
 };
