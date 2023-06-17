@@ -38,21 +38,12 @@
         </div>
       </div>
     </div>
-    <Loading v-show="loading" :loadingText="loadingText" />
-    <Congratulation
-      :reward="proposerReword"
-      :balance="proposerBalance"
-      @popClose="popClose"
-      v-show="showCongratulation"
-    />
   </div>
 </template>
 
 <script>
 import DatasetInfo from "../../components/datasetDetails/DatasetInfo.vue";
 import { debounce } from "lodash";
-import Loading from "../../components/parts/Loading.vue";
-import Congratulation from "../../components/parts/Congratulation.vue";
 import { useVuelidate } from "@vuelidate/core";
 import DatasetStatusBadge from "@/components/parts/DatasetStatusBadge.vue";
 import PurchasedCommentList from "../parts/PurchasedCommentList.vue";
@@ -66,8 +57,6 @@ export default {
   },
   components: {
     DatasetInfo,
-    Loading,
-    Congratulation,
     DatasetStatusBadge,
     PurchasedCommentList,
   },
@@ -85,6 +74,9 @@ export default {
           label: "トークン作成完了",
         },
       ],
+      judgement: "",
+      judgementReason: "",
+      PageTransition: false,
     };
   },
   props: {
@@ -100,6 +92,12 @@ export default {
   computed: {
     showCongratulation() {
       return this.openCongratulationPop && this.congratulation;
+    },
+    isPurchasedOrOwn() {
+      // 購入済みまたは所有者の場合True
+      return (
+        this.datasetOwnType === "un_purchased" || this.datasetOwnType == "owner"
+      );
     },
   },
   mounted() {

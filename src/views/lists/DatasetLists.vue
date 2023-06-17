@@ -28,28 +28,45 @@
       @modalOn="modalOn"
       @getDatasets="getDatasets"
     />
+    <Loading v-show="loading" />
+    <Purchased @popClose="popClose" v-show="showPurchased" />
   </div>
 </template>
 
 <script>
 import DatasetCards from "../../components/common/DatasetCards.vue";
 import DatasetDetailModal from "../../components/common/DatasetDetailModal.vue";
+import Loading from "../../components/parts/Loading.vue";
+import Purchased from "../../components/parts/Purchased.vue";
 
 export default {
   name: "proposa-list",
   components: {
     DatasetCards,
     DatasetDetailModal,
+    Loading,
+    Purchased,
   },
   data() {
     return {
       isOpenDetailModal: false,
       targetModal: {},
+      loading: false,
+      openPurchasedPop: false,
     };
   },
   computed: {
     datasets() {
       return this.$store.getters["datasetStore/datasets"];
+    },
+    isPurchasedOrOwn() {
+      // 購入済みまたは所有者の場合True
+      return (
+        this.datasetOwnType === "un_purchased" || this.datasetOwnType == "owner"
+      );
+    },
+    showPurchased() {
+      return this.openPurchasedPop && this.isPurchasedOrOwn;
     },
   },
   created() {
