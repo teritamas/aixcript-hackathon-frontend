@@ -4,8 +4,6 @@ import UserStore from "./modules/UserStore";
 import DisplayStore from "./modules/DisplayStore";
 import createPersistedState from "vuex-persistedstate";
 import DatasetVoteStore from "./modules/DatasetVoteStore";
-import TimelineStore from "./modules/TimelineStore";
-import GiftStore from "./modules/GiftStore";
 
 export default createStore({
   plugins: [
@@ -44,7 +42,5 @@ export default createStore({
     userStore: UserStore,
     displayStore: DisplayStore,
     datasetVoteStore: DatasetVoteStore,
-    timelineStore: TimelineStore,
-    giftStore: GiftStore,
   },
 });
