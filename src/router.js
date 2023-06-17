@@ -21,11 +21,6 @@ const router = createRouter({
       name: "dataset",
       component: DatasetView,
     },
-    //{
-    //    path: '/dataset/:datasetId',
-    //    name: 'datasetDetail',
-    //    component: DatasetDetailView
-    //},
     {
       path: "/mypage",
       name: "mypage",

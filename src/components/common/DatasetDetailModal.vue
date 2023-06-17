@@ -37,13 +37,6 @@
         </div>
       </div>
     </div>
-    <Loading v-show="loading" :loadingText="loadingText" />
-    <Congratulation
-      :reward="proposerReword"
-      :balance="proposerBalance"
-      @popClose="popClose"
-      v-show="showCongratulation"
-    />
   </div>
 </template>
 
@@ -51,8 +44,6 @@
 import DatasetInfo from "../../components/datasetDetails/DatasetInfo.vue";
 //import DatasetVoteStatus from "../../components/datasetDetails/DatasetVoteStatus.vue";
 import { debounce } from "lodash";
-import Loading from "../../components/parts/Loading.vue";
-import Congratulation from "../../components/parts/Congratulation.vue";
 import { useVuelidate } from "@vuelidate/core";
 //import DatasetStatusBadge from "@/components/parts/DatasetStatusBadge.vue";
 import PurchasedCommentList from "../parts/PurchasedCommentList.vue";
@@ -67,8 +58,6 @@ export default {
   components: {
     DatasetInfo,
     //DatasetVoteStatus,
-    Loading,
-    Congratulation,
     //DatasetStatusBadge,
     PurchasedCommentList,
   },
@@ -76,19 +65,7 @@ export default {
     return {
       judgement: "",
       judgementReason: "",
-      loading: false,
       PageTransition: false,
-      openCongratulationPop: true,
-      loadingText: [
-        {
-          checkTarget: "voted-check",
-          label: "投票完了",
-        },
-        {
-          checkTarget: "token-check",
-          label: "トークン作成完了",
-        },
-      ],
     };
   },
   props: {
@@ -113,11 +90,12 @@ export default {
     showCongratulation() {
       return this.openCongratulationPop && this.congratulation;
     },
-    //congratulation() {
-    //  return (
-    //    this.dataset.datasetStatus == "accept" && this.voteDetail.isProposer
-    //  );
-    //},
+    isPurchasedOrOwn() {
+      // 購入済みまたは所有者の場合True
+      return (
+        this.datasetOwnType === "un_purchased" || this.datasetOwnType == "owner"
+      );
+    },
   },
   mounted() {
     this.openCongratulationPop = true;
