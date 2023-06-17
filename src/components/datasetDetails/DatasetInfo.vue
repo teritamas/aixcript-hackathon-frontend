@@ -1,52 +1,30 @@
 <template>
   <h3 class="font-bold text-center p-2">{{ dataset.title }}</h3>
-  <i class="block-explorer-badge"
-    ><a :href="blockExplorerUrl" target="_blank" rel="noopener noreferrer"
-      >ブロックエクスプローラーで確認する</a
-    ></i
-  >
+  <div>
+    <img
+      class="rounded-t-sm m-auto"
+      alt="product image"
+      :src="thumbnailImageUrl"
+      @error="imageError = true"
+    />
+  </div>
+  <div class="p-3">
+    <span
+      v-for="tag in dataset.tags"
+      :key="tag"
+      class="bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300"
+      >{{ tag }}</span
+    >
+  </div>
   <div class="form-item">
     <p class="form-item-label is-msg">
-      <span class="form-item-list"></span>事業概要
+      <span class="form-item-list"></span>説明
     </p>
     <p style="max-width: 430px">{{ dataset.description }}</p>
   </div>
   <div class="form-item">
-    <p class="form-item-label"><span class="form-item-list"></span>調達金額</p>
-    <p>
-      {{ phaseDetail.phaseJpName }}<br />
-      金額:{{ phaseDetail.procurementTokenAmount }}千円<br />条件:{{
-        phaseDetail.minVoterCount
-      }}人以上の投票{{ phaseDetail.minAgreementCount }}の賛成 <br />投票期間:{{
-        phaseDetail.limitDate
-      }}日
-    </p>
-  </div>
-  <div class="form-item">
-    <p class="form-item-label is-msg">
-      <span class="form-item-list"></span>添付資料
-    </p>
-    <div class="preview-item w-full mt-2">
-      <embed
-        v-show="datasetAttachmentFile.filePath"
-        class="preview-item-file"
-        :src="datasetAttachmentFile.filePath"
-        alt=""
-      />
-    </div>
-  </div>
-  <div class="form-item">
-    <p class="form-item-label mb-2">
-      <span class="form-item-list"></span>仲間募集
-    </p>
-    <p v-if="dataset.isRecruitingTeammates">募集する</p>
-    <p v-if="!dataset.isRecruitingTeammates">募集しない</p>
-  </div>
-  <div class="form-item">
-    <p class="form-item-label is-msg">
-      <span class="form-item-list"></span>その他
-    </p>
-    <p>{{ dataset.otherContents }}</p>
+    <p class="form-item-label"><span class="form-item-list"></span>金額</p>
+    <p>{{ dataset.price }}円</p>
   </div>
 </template>
 
@@ -56,18 +34,16 @@ export default {
   components: {},
   props: {
     dataset: {},
-    datasetAttachmentFile: {},
   },
   computed: {
     thumbnailImageUrl() {
-      if (this.dataset.datasetFundraisingCondition === null) {
-        return this.dataset.targetAmount; // BEのバージョン差異の対応
-      } else {
-        return this.dataset.datasetFundraisingCondition.procurementTokenAmount;
-      }
-    },
-    blockExplorerUrl() {
-      return this.dataset.blockExplorerUrlPath;
+      let fileName = this.dataset.fileName.substr(
+        0,
+        this.dataset.fileName.indexOf(".")
+      );
+      return this.imageError
+        ? this.defaultImage
+        : `${process.env.VUE_APP_API_ENDPOINT}dataset/${fileName}/thumbnail`;
     },
   },
 };
@@ -89,7 +65,7 @@ h3 {
     margin-left: -15px;
     width: 30px;
     height: 1px;
-    background: orange;
+    background: rgb(47, 40, 94);
   }
 }
 
@@ -99,20 +75,6 @@ h3 {
     margin-top: 2rem;
     margin-bottom: 0.5rem;
   }
-}
-
-.preview-item {
-  width: 100%;
-}
-.preview-item-file {
-  width: 100%;
-  min-height: 300px;
-}
-
-.form {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 720px;
 }
 .form-item {
   padding-bottom: 24px;

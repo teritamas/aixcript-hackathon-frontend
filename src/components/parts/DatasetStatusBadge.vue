@@ -50,7 +50,7 @@ export default {
   padding: 5px;
   font-size: 14px;
   text-align: center;
-  border-radius: 0 0 10px 0;
+  border-radius: 0.5rem 0 10px 0;
 }
 
 .dataset-status-badge-active {

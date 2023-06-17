@@ -5,8 +5,6 @@
         <h2 class="text-center pt-5 pb-5 text-white">画像登録</h2>
       </div>
       <DatasetInnovations v-if="showContentsType === 'dataset'" />
-      <DatasetInnovations v-if="showContentsType === 'survey'" />
-      <DatasetInnovations v-if="showContentsType === 'tester'" />
     </div>
     <PageTransitionRequiredLogin
       v-show="token == ''"
