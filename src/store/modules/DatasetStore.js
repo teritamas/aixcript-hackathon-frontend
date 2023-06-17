@@ -10,8 +10,7 @@ export default {
       filePath: "",
       fileName: "",
     },
-    datasets: "",
-    dataset: {},
+    datasets: {},
     validateResult: {
       bestGuessLabels: "",
       fullMathUrl: [],
@@ -30,9 +29,6 @@ export default {
     },
     newDataset(state) {
       return state.newDataset;
-    },
-    dataset(state) {
-      return state.dataset;
     },
     file(state) {
       return state.datasetAttachmentFile;
@@ -88,25 +84,6 @@ export default {
           (this.errored = true), (this.error = err);
         });
     },
-    getDataset(state, commit) {
-      const client = applyCaseMiddleware(axios.create());
-      const termRequestUri =
-        process.env.VUE_APP_API_ENDPOINT + "dataset/" + commit;
-      return client
-        .get(termRequestUri, {
-          withCredentials: false,
-          headers: {
-            Authorization: state.getters.token,
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-          state.commit("setDataset", response.data);
-        })
-        .catch((err) => {
-          (this.errored = true), (this.error = err);
-        });
-    },
     getDatasetFile(state, commit) {
       const client = applyCaseMiddleware(axios.create());
       const termRequestUri =
@@ -130,9 +107,6 @@ export default {
         .catch((err) => {
           (this.errored = true), (this.error = err);
         });
-    },
-    storeNewDataset(state, commit) {
-      state.commit("setNewDataset", commit.newDataset);
     },
     storeFile(state, commit) {
       state.commit("setDatasetAttachmentFile", commit);
@@ -179,6 +153,35 @@ export default {
         })
         .then((response) => {
           state.commit("setRegisteredDatasetId", response.data.datasetId);
+        })
+        .catch((err) => {
+          (this.errored = true), (this.error = err);
+        });
+    },
+    purchaseDataset(state, commit) {
+      console.log(commit);
+      const client = applyCaseMiddleware(axios.create());
+      const termRequestUri =
+        process.env.VUE_APP_API_ENDPOINT +
+        "dataset/" +
+        commit.datasetId +
+        "/purchased";
+      return client
+        .post(
+          termRequestUri,
+          {
+            user_id: state.getters.token,
+          },
+          {
+            headers: {
+              Authorization: state.getters.token,
+              "Content-Type": "application/json",
+              accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
         })
         .catch((err) => {
           (this.errored = true), (this.error = err);

@@ -26,6 +26,7 @@
       v-if="isOpenDetailModal"
       :dataset="targetModal"
       @modalOn="modalOn"
+      @getDatasets="getDatasets"
     />
   </div>
 </template>

@@ -3,10 +3,10 @@
     <div v-if="dataset" class="content-center pt-5">
       <div class="card card-one glass">
         <div class="dataset-status-badge-area">
-          <!--<DatasetStatusBadge
-          :datasetOwnType="dataset.datasetOwnType"
-          :datasetStatus="dataset.datasetStatus"
-        />-->
+          <DatasetStatusBadge
+            :datasetOwnType="dataset.datasetOwnType"
+            :datasetStatus="dataset.datasetStatus"
+          />
         </div>
         <div class="form mb-10">
           <DatasetInfo
@@ -17,7 +17,6 @@
 
         <!--pytestの実行サンプルがaccept-->
         <div class="bg-light-gray p-3" v-if="!showVoteArea">
-          <!--<DatasetVoteStatus :dataset="dataset" :voteStatus="voteStatus" />-->
           <div class="form mb-5">
             <PurchasedCommentList
               v-if="dataset.purchasedUsers"
@@ -27,7 +26,13 @@
           </div>
         </div>
         <div class="">
-          <button class="form-btn" @click="registerDataset()">購入する</button>
+          <button
+            v-if="purchasedButtonEnabled()"
+            class="form-btn"
+            @click="purchaseDataset()"
+          >
+            購入する
+          </button>
           <button
             class="form-return-btn mb-10"
             @click="$emit('modalOn', dataset)"
@@ -49,12 +54,11 @@
 
 <script>
 import DatasetInfo from "../../components/datasetDetails/DatasetInfo.vue";
-//import DatasetVoteStatus from "../../components/datasetDetails/DatasetVoteStatus.vue";
 import { debounce } from "lodash";
 import Loading from "../../components/parts/Loading.vue";
 import Congratulation from "../../components/parts/Congratulation.vue";
 import { useVuelidate } from "@vuelidate/core";
-//import DatasetStatusBadge from "@/components/parts/DatasetStatusBadge.vue";
+import DatasetStatusBadge from "@/components/parts/DatasetStatusBadge.vue";
 import PurchasedCommentList from "../parts/PurchasedCommentList.vue";
 
 const validJudgement = (value) => (value === "" ? false : true);
@@ -66,23 +70,19 @@ export default {
   },
   components: {
     DatasetInfo,
-    //DatasetVoteStatus,
     Loading,
     Congratulation,
-    //DatasetStatusBadge,
+    DatasetStatusBadge,
     PurchasedCommentList,
   },
   data() {
     return {
-      judgement: "",
-      judgementReason: "",
       loading: false,
-      PageTransition: false,
       openCongratulationPop: true,
       loadingText: [
         {
           checkTarget: "voted-check",
-          label: "投票完了",
+          label: "購入完了",
         },
         {
           checkTarget: "token-check",
@@ -93,14 +93,6 @@ export default {
   },
   props: {
     dataset: Array,
-    datasetId: String,
-    title: String,
-    description: String,
-    fileName: String,
-    price: Number,
-    datasetOwnType: String,
-    tags: Array,
-    purchasedUsers: Array,
   },
   validations() {
     return {
@@ -113,44 +105,41 @@ export default {
     showCongratulation() {
       return this.openCongratulationPop && this.congratulation;
     },
-    //congratulation() {
-    //  return (
-    //    this.dataset.datasetStatus == "accept" && this.voteDetail.isProposer
-    //  );
-    //},
   },
   mounted() {
     this.openCongratulationPop = true;
-  },
-  created() {
-    // メソッドを実行する
-    this.clearJudgementReason();
   },
   methods: {
     onDelayAction: debounce(function () {
       this.voteJudgementEnrichment();
     }, 1500),
-    clearJudgementReason() {
-      this.$store.commit("datasetVoteStore/clearJudgementReason");
+    purchasedButtonEnabled() {
+      // 購入済みまたは所有者の場合は無効化する
+      return this.dataset.datasetOwnType === "un_purchased";
     },
     setLoading(bool) {
       this.loading = bool;
-    },
-    loadCheck(checkTarget, time) {
-      setTimeout(() => {
-        this.inCheck(checkTarget);
-      }, time);
     },
     inCheck(checkTarget) {
       let checkbox = document.getElementById(checkTarget);
       checkbox.checked = true;
     },
-    outCheck(checkTarget) {
-      let checkbox = document.getElementById(checkTarget);
-      checkbox.checked = false;
-    },
     popClose() {
       this.openCongratulationPop = false;
+    },
+    purchaseDataset() {
+      if (this.purchasedButtonDisabled) {
+        // 無効化されている時は何もしない
+        console.warn("購入できるユーザでないので購入できません");
+        return;
+      }
+      this.$store
+        .dispatch("datasetStore/purchaseDataset", {
+          datasetId: this.dataset.datasetId,
+        })
+        .then(() => {
+          this.$emit("getDatasets");
+        });
     },
   },
 };
