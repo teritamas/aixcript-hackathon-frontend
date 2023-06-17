@@ -29,7 +29,6 @@
           :description="dataset.description"
           :fileName="dataset.fileName"
           :price="dataset.price"
-          :datasetOwnType="dataset.datasetOwnType"
           :tags="dataset.tags"
           :createdAt="dataset.createdAt"
         />

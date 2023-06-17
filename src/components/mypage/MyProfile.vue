@@ -1,50 +1,46 @@
 <template>
-    <div class="bg-glass">
-      <div class="card card-one">
-        <div class="head">
-            <div class="avatar">
-            <img :src="avatarImage" alt="sayako" />
-            </div>
-        </div>
-
-
-        <h3>{{ detail.userName }}</h3>
-        <div class="stats px-5">
-        <div class="stat text-center">
-            <i>現金と交換可能なトークン</i>
-            <i class="grid">{{ exchangeableToken }}<span>pts</span></i>
-        </div>
-        </div>
-        <div class="stats px-5">
-        <div class="stat text-center">
-            <i>提案した回数</i>
-            <i class="grid">{{ datasetCount }}<span>回</span></i>
-        </div>
-        <div class="stat text-center">
-            <i>投票した回数</i>
-            <i class="grid">{{ datasetVoteCount }}<span>回</span></i>
-        </div>
-        <div class="stat text-center">
-            <i>保有トークン</i>
-            <i class="grid">{{ detail.totalTokenAmount }}<span>pts</span></i>
-        </div>
-        </div>
-
-        <div class="desc">
-        {{ detail.message }}
-        </div>
-        <div class="footer">
-        <i class="text-white" >ウォレットアドレス</i>
-            <v-icon @click="copyToClipboard(text)"><p class="text-white" style="word-break: break-all">
-            {{ detail.walletAddress }}
-            </p>
-        </v-icon>
+  <div class="bg-glass">
+    <div class="card card-one">
+      <div class="head">
+        <div class="avatar">
+          <img :src="avatarImage" alt="sayako" />
         </div>
       </div>
+
+      <h3>{{ detail.userName }}</h3>
+      <div class="stats px-5">
+        <div class="stat text-center">
+          <i>保有トークン</i>
+          <i class="grid">{{ exchangeableToken }}<span>pts</span></i>
+        </div>
+      </div>
+      <div class="stats px-5">
+        <div class="stat text-center">
+          <i>購入した回数</i>
+          <i class="grid">{{ userPurchaseDatasetsCount }}<span>回</span></i>
+        </div>
+        <div class="stat text-center">
+          <i>販売した回数</i>
+          <i class="grid">{{ userSellDatasetsCount }}<span>回</span></i>
+        </div>
+      </div>
+
+      <div class="desc">
+        {{ detail.message }}
+      </div>
+      <div class="footer">
+        <i class="text-white">ウォレットアドレス</i>
+        <v-icon @click="copyToClipboard(text)"
+          ><p class="text-white" style="word-break: break-all">
+            {{ detail.walletAddress }}
+          </p>
+        </v-icon>
+      </div>
     </div>
+  </div>
 </template>
 <script>
-import {generatorService} from '@/plugins/avatar'
+import { generatorService } from "@/plugins/avatar";
 
 export default {
   name: "dataset-form",
@@ -53,39 +49,28 @@ export default {
     return {};
   },
   props: {
-    token: String,
+    detail: Object,
   },
   computed: {
     avatarImage() {
       return generatorService.generateRandomAvatar(this.detail.walletAddress);
     },
-    detail() {
-      return this.$store.getters["userStore/detail"];
+    exchangeableToken() {
+      return this.detail.totalExchangeableToken === undefined
+        ? 0
+        : this.detail.totalExchangeableToken;
     },
-    exchangeableToken(){
-      return this.detail.totalExchangeableToken === undefined ? 0 : this.detail.totalExchangeableToken
-    },
-    datasetCount() {
-      if (!this.detail.datasets) {
+    userPurchaseDatasetsCount() {
+      if (!this.detail.purchaseDatasets) {
         return 0;
       }
-      return this.detail.datasets.length;
+      return this.detail.purchaseDatasets.length;
     },
-    datasetVoteCount() {
-      if (!this.detail.datasetVotes) {
+    userSellDatasetsCount() {
+      if (!this.detail.sellDatasets) {
         return 0;
       }
-      return this.detail.datasetVotes.length;
-    },
-  },
-  created() {
-    // メソッドを実行する
-    this.getUserDetail();
-  },
-  methods: {
-    // storeのactionsをたたきにいく
-    getUserDetail() {
-      this.$store.dispatch("userStore/getDetail", this.token).then(() => {});
+      return this.detail.sellDatasets.length;
     },
   },
 };
@@ -282,127 +267,6 @@ body {
     margin-left: auto;
     margin-right: auto;
     z-index: 100;
-  }
-}
-
-// bg
-.context {
-  width: 100%;
-  position: absolute;
-}
-
-.area {
-  background: rgb(47, 40, 94);
-  background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
-  width: 100%;
-  height: 94vh; // 100vh
-}
-
-.circles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.circles li {
-  position: absolute;
-  display: block;
-  list-style: none;
-  width: 20px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  animation: animate 25s linear infinite;
-  bottom: -150px;
-}
-
-.circles li:nth-child(1) {
-  left: 25%;
-  width: 80px;
-  height: 80px;
-  animation-delay: 0s;
-}
-
-.circles li:nth-child(2) {
-  left: 10%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 2s;
-  animation-duration: 12s;
-}
-
-.circles li:nth-child(3) {
-  left: 70%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 4s;
-}
-
-.circles li:nth-child(4) {
-  left: 40%;
-  width: 60px;
-  height: 60px;
-  animation-delay: 0s;
-  animation-duration: 18s;
-}
-
-.circles li:nth-child(5) {
-  left: 65%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 0s;
-}
-
-.circles li:nth-child(6) {
-  left: 75%;
-  width: 110px;
-  height: 110px;
-  animation-delay: 3s;
-}
-
-.circles li:nth-child(7) {
-  left: 35%;
-  width: 150px;
-  height: 150px;
-  animation-delay: 7s;
-}
-
-.circles li:nth-child(8) {
-  left: 50%;
-  width: 25px;
-  height: 25px;
-  animation-delay: 15s;
-  animation-duration: 45s;
-}
-
-.circles li:nth-child(9) {
-  left: 20%;
-  width: 15px;
-  height: 15px;
-  animation-delay: 2s;
-  animation-duration: 35s;
-}
-
-.circles li:nth-child(10) {
-  left: 85%;
-  width: 150px;
-  height: 150px;
-  animation-delay: 0s;
-  animation-duration: 11s;
-}
-
-@keyframes animate {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-    border-radius: 0;
-  }
-  100% {
-    transform: translateY(-1000px) rotate(720deg);
-    opacity: 0;
-    border-radius: 50%;
   }
 }
 </style>

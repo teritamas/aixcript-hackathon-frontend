@@ -1,12 +1,13 @@
 <template>
   <LoginStep v-if="!token" />
   <div
+    v-else
     class="grid grid-cols-1 md:grid-cols-3 gap-4 p-2 md:p-5"
     style="max-width: 1200px; margin: 0 auto"
   >
-    <MyProfile v-if="token" :token="token" />
-    <MyDatasets v-if="token" :detail="detail" class="md:col-span-2" />
-    <MyPurchasedDatasets v-if="token" :detail="detail" class="md:col-span-2" />
+    <MyProfile :detail="detail" />
+    <MyDatasets :detail="detail" class="md:col-span-2" />
+    <MyPurchasedDatasets :detail="detail" class="md:col-span-2" />
   </div>
 </template>
 

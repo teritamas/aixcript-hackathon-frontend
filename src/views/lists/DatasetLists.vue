@@ -26,6 +26,7 @@
       v-if="isOpenDetailModal"
       :dataset="targetModal"
       @modalOn="modalOn"
+      @getDatasets="getDatasets"
     />
     <Loading v-show="loading" />
     <Purchased @popClose="popClose" v-show="showPurchased" />
