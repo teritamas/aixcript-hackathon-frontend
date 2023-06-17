@@ -1,12 +1,12 @@
 <template>
   <div class="content-center">
     <div class="card card-one">
-        <div class="dataset-status-badge-area">
-            <DatasetStatusBadge 
-            :datasetOwnType="dataset.datasetOwnType"
-            :datasetStatus="dataset.datasetStatus"
-            />
-        </div>
+      <div class="dataset-status-badge-area">
+        <DatasetStatusBadge
+          :datasetOwnType="dataset.datasetOwnType"
+          :datasetStatus="dataset.datasetStatus"
+        />
+      </div>
       <div class="form mb-10">
         <DatasetInfo
           :dataset="dataset"
@@ -54,10 +54,8 @@
           ></textarea>
         </div>
         <div class="form-item">
-          <p class="form-item-label is-msg">
-          獲得できるトークン量 (1~10)
-          </p>
-          <span class="form-item-label-option">{{rewordToken}}</span>
+          <p class="form-item-label is-msg">獲得できるトークン量 (1~10)</p>
+          <span class="form-item-label-option">{{ rewordToken }}</span>
           {{ judgementReasonScore }}
         </div>
 
@@ -95,10 +93,10 @@
     :reward="reward"
     :balance="balance"
   />
-  <Congratulation 
+  <Congratulation
     :reward="proposerReword"
     :balance="proposerBalance"
-    @popClose="popClose" 
+    @popClose="popClose"
     v-show="showCongratulation"
   />
 </template>

@@ -10,7 +10,7 @@ export default {
       filePath: "",
       fileName: "",
     },
-    datasetLists: "",
+    datasets: "",
     dataset: {},
     validateResult: {
       bestGuessLabels: "",
@@ -37,8 +37,8 @@ export default {
     file(state) {
       return state.datasetAttachmentFile;
     },
-    datasetLists(state) {
-      return state.datasetLists;
+    datasets(state) {
+      return state.datasets;
     },
     token(state, getters, rootState, rootGetters) {
       return rootGetters["token"];
@@ -57,8 +57,8 @@ export default {
     setDataset(state, dataset) {
       state.dataset = dataset.dataset;
     },
-    setDatasetLists(state, datasetLists) {
-      state.datasetLists = datasetLists.datasets;
+    setDatasets(state, datasets) {
+      state.datasets = datasets.datasets;
     },
     setDatasetAttachmentFile(state, commit) {
       state.datasetAttachmentFile = commit;
@@ -68,7 +68,7 @@ export default {
     },
   },
   actions: {
-    getDatasetList(state) {
+    getDatasets(state) {
       const client = applyCaseMiddleware(axios.create());
       let termRequestUri = process.env.VUE_APP_API_ENDPOINT + "dataset";
       if (state.getters.token !== "") {
@@ -82,7 +82,7 @@ export default {
           },
         })
         .then((response) => {
-          state.commit("setDatasetLists", response.data);
+          state.commit("setDatasets", response.data);
         })
         .catch((err) => {
           (this.errored = true), (this.error = err);
@@ -100,6 +100,7 @@ export default {
           },
         })
         .then((response) => {
+          console.log(response.data);
           state.commit("setDataset", response.data);
         })
         .catch((err) => {
