@@ -1,17 +1,8 @@
 <template>
   <div class="form">
     <div class="form-item">
-      <p class="form-item-label is-msg">
-        <span class="form-item-label-required">必須</span>説明（300字以内）
-      </p>
-      <textarea
-        v-model="newDataset.description"
-        class="form-item-textarea-on-dataset"
-      ></textarea>
-    </div>
-    <div class="form-item">
       <p class="form-item-label">
-        <span class="form-item-label-required">必須</span>添付資料（PDF）
+        <span class="form-item-label-required">必須</span>画像（PDF）
       </p>
       <div v-show="!newDataset.filePath" class="form-item-input-file">
         <label class="border file mt-2 input-item__label"
@@ -25,7 +16,7 @@
         v-show="newDataset.filePath"
         class="preview-item-file block"
         :src="newDataset.filePath"
-        alt="添付資料"
+        alt="データセット"
       />
       <div
         v-show="newDataset.filePath"
@@ -51,47 +42,24 @@
         </div>
       </div>
     </div>
+
     <div class="form-item">
-      <p class="form-item-label mb-2">
-        <span class="form-item-label-option">任意</span>仲間募集
+      <p class="form-item-label is-msg">
+        <span class="form-item-label-required">必須</span>説明（300字以内）
       </p>
-      <div class="radio-button-group w-full">
-        <div class="item">
-          <input
-            type="radio"
-            v-model="newDataset.isRecruitingTeammates"
-            class="radio-button"
-            value="false"
-            id="not-recruiting"
-            checked
-          />
-          <label for="not-recruiting">募集しない</label>
-        </div>
-        <div class="item">
-          <input
-            type="radio"
-            v-model="newDataset.isRecruitingTeammates"
-            class="radio-button"
-            value="true"
-            id="recruiting"
-          />
-          <label for="recruiting">募集する</label>
-        </div>
-      </div>
+      <textarea
+        v-model="newDataset.description"
+        class="form-item-textarea-on-dataset"
+      ></textarea>
     </div>
-    <button
-      class="form-btn mb-10"
-      :class="v$.$invalid ? 'form-btn-disabled' : ''"
-    >
-      保存する
-    </button>
+
+    <button class="form-btn mb-10" @click="registerDataset()">保存する</button>
   </div>
 </template>
 
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength } from "@vuelidate/validators";
-import { phaseStatus } from "../../plugins/datasetPhase";
 
 export default {
   name: "dataset-form",
@@ -101,17 +69,10 @@ export default {
   data() {
     return {
       showContentsType: this.$store.state.showContentsType,
-      datasetPhase: String,
     };
   },
-  components: {
-  },
+  components: {},
   computed: {
-    phaseDetail: function () {
-      return function (selectPhase) {
-        return phaseStatus(selectPhase);
-      };
-    },
     newDataset() {
       return this.$store.getters["datasetStore/newDataset"];
     },
@@ -122,25 +83,13 @@ export default {
   validations() {
     return {
       newDataset: {
-        title: { required, maxLength: maxLength(30) },
         description: { required, maxLength: maxLength(500) },
-        datasetPhase: { required },
         filePath: { required },
       },
     };
   },
-  created() {
-    this.newDataset.datasetPhase = "seed";
-  },
+  created() {},
   methods: {
-    showConfirmView: function () {
-      const newDataset = this.newDataset;
-      const file = this.file;
-      this.$store
-        .dispatch("datasetStore/storeNewDataset", { newDataset, file })
-        .then(() => {});
-      this.$router.push("/datasetConfirm");
-    },
     onFileChange(e) {
       const files = e.target.files || e.dataTransfer.files;
       this.setDatasetAttachmentFile(files[0]);
@@ -160,6 +109,11 @@ export default {
     },
     remove() {
       this.newDataset.filePath = false;
+    },
+    registerDataset() {
+      this.$store
+        .dispatch("datasetStore/registerDataset", this.newDataset)
+        .then(() => {});
     },
   },
 };

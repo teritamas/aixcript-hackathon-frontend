@@ -1,11 +1,15 @@
 <template>
-  <h3 class="font-bold text-center p-2 ">{{ dataset.title }}</h3>
-  <i class="block-explorer-badge"><a :href="blockExplorerUrl" target="_blank" rel="noopener noreferrer">ブロックエクスプローラーで確認する</a></i>
+  <h3 class="font-bold text-center p-2">{{ dataset.title }}</h3>
+  <i class="block-explorer-badge"
+    ><a :href="blockExplorerUrl" target="_blank" rel="noopener noreferrer"
+      >ブロックエクスプローラーで確認する</a
+    ></i
+  >
   <div class="form-item">
     <p class="form-item-label is-msg">
       <span class="form-item-list"></span>事業概要
     </p>
-    <p style="max-width:430px;">{{ dataset.description }}</p>
+    <p style="max-width: 430px">{{ dataset.description }}</p>
   </div>
   <div class="form-item">
     <p class="form-item-label"><span class="form-item-list"></span>調達金額</p>
@@ -47,8 +51,6 @@
 </template>
 
 <script>
-import { phaseStatus } from "../../plugins/datasetPhase";
-
 export default {
   name: "dataset-info",
   components: {},
@@ -57,15 +59,11 @@ export default {
     datasetAttachmentFile: {},
   },
   computed: {
-    phaseDetail() {
-      return phaseStatus(this.dataset.datasetPhase);
-    },
     thumbnailImageUrl() {
       if (this.dataset.datasetFundraisingCondition === null) {
         return this.dataset.targetAmount; // BEのバージョン差異の対応
       } else {
-        return this.dataset.datasetFundraisingCondition
-          .procurementTokenAmount;
+        return this.dataset.datasetFundraisingCondition.procurementTokenAmount;
       }
     },
     blockExplorerUrl() {
@@ -76,29 +74,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
-h3{
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    font-weight: bold;
-    position: relative;
-    text-align: center;
-    &::after{
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      margin-left: -15px;
-      width: 30px;
-      height: 1px;
-      background: orange;
-    }
+h3 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    margin-left: -15px;
+    width: 30px;
+    height: 1px;
+    background: orange;
+  }
 }
 
 @media screen and (max-width: 480px) {
-  h3{
+  h3 {
     font-size: 1.5rem;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
@@ -176,7 +172,7 @@ h3{
   font-size: 14px;
   position: absolute;
   right: 0;
-  top:0;
+  top: 0;
   padding: 5px;
 }
 </style>
