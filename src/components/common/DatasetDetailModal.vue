@@ -3,10 +3,7 @@
     <div v-if="dataset" class="content-center pt-5">
       <div class="card card-one glass">
         <div class="dataset-status-badge-area">
-          <DatasetStatusBadge
-            :datasetOwnType="dataset.datasetOwnType"
-            :datasetStatus="dataset.datasetStatus"
-          />
+          <DatasetStatusBadge :datasetOwnType="dataset.datasetOwnType" />
         </div>
         <div class="form mb-10">
           <DatasetInfo
@@ -15,8 +12,7 @@
           />
         </div>
 
-        <!--pytestの実行サンプルがaccept-->
-        <div class="bg-light-gray p-3" v-if="!showVoteArea">
+        <div class="bg-light-gray p-3">
           <div class="form mb-5">
             <PurchasedCommentList
               v-if="dataset.purchasedUsers"
@@ -25,7 +21,7 @@
             </PurchasedCommentList>
           </div>
         </div>
-        <div class="">
+        <div>
           <button
             v-if="purchasedButtonEnabled()"
             class="form-btn"
