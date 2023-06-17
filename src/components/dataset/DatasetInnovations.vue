@@ -46,8 +46,13 @@
           <h2>
             AIによる投稿可否
             <span
+              class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
+              v-if="fileIsUploaded"
+              >待機中</span
+            >
+            <span
               class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300"
-              v-if="isForbiddenFromAiJudgment"
+              v-else-if="isForbiddenFromAiJudgment"
               >禁止</span
             >
             <span
@@ -75,23 +80,26 @@
         <div class="bg-red-100 rounded-lg shadow-lg p-6">
           <h3>完全一致した画像</h3>
           <div v-if="validateResult.fullMathUrl.length === 0">なし: OK</div>
-          <div v-else class="grid grid-cols-3 justify-items-center">
-            <div
-              class="justify-items-center text-center"
-              v-for="url in validateResult.fullMathUrl"
-              :key="url"
-            >
-              <img
-                :src="url"
-                alt="image"
-                class="rounded-lg shadow-lg h-auto w-24"
-              />
-              <a
-                class="no-underline hover:underline"
-                target="_blank"
-                :href="url"
-                >詳細を見る</a
+          <div v-else>
+            <span>著作権違反の可能性があるので投稿できません</span>
+            <div class="grid grid-cols-3 justify-items-center">
+              <div
+                class="justify-items-center text-center"
+                v-for="url in validateResult.fullMathUrl"
+                :key="url"
               >
+                <img
+                  :src="url"
+                  alt="image"
+                  class="rounded-lg shadow-lg h-auto w-24"
+                />
+                <a
+                  class="no-underline hover:underline"
+                  target="_blank"
+                  :href="url"
+                  >詳細を見る</a
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -148,7 +156,7 @@
 
     <div class="form-item mt-5">
       <p class="form-item-label is-msg">
-        <span class="form-item-label-required">任意</span>説明（300字以内）
+        <span class="form-item-label-required">必須</span>説明（300字以内）
       </p>
       <textarea
         v-model="newDataset.description"
@@ -159,7 +167,13 @@
       ></textarea>
     </div>
 
-    <button class="form-btn mb-10" @click="registerDataset()">保存する</button>
+    <button
+      class="form-btn mb-10"
+      :disabled="v$.$invalid || isForbiddenFromAiJudgment"
+      @click="registerDataset()"
+    >
+      保存する
+    </button>
   </div>
 </template>
 
@@ -184,6 +198,9 @@ export default {
     },
     file() {
       return this.$store.getters["datasetStore/file"];
+    },
+    fileIsUploaded() {
+      return this.file.filePath === "";
     },
     validateResult() {
       return this.$store.getters["datasetStore/validateResult"];
