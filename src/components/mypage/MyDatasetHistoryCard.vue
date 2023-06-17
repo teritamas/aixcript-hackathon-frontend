@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="prog-bar">
-            <p class="bar" :style="{ width: prog-barSize }"></p>
+            <p class="bar" :style="{ width: prog - barSize }"></p>
           </div>
           <small>{{ progressBarFooterMessage }}</small>
         </div>
@@ -46,15 +46,12 @@
     </router-link>
   </div>
 </template>
-  
-  <script>
-import VotersCommentList from "../parts/VotersCommentList.vue";
+
+<script>
 import moment from "moment";
 export default {
   name: "MyDatasetHistoryCard",
-  components: {
-    VotersCommentList,
-  },
+  components: {},
   data() {
     return {
       imageError: false,
@@ -127,8 +124,8 @@ export default {
   },
 };
 </script>
-  
-  <style lang=scss scoped>
+
+<style lang="scss" scoped>
 .prog-bar {
   height: 16px;
   background-color: #ececec;
@@ -142,4 +139,3 @@ export default {
   background-color: #ffca28;
 }
 </style>
-  
