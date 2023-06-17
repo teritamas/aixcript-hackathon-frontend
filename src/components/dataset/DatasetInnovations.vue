@@ -60,7 +60,6 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength } from "@vuelidate/validators";
-import { phaseStatus } from "../../plugins/datasetPhase";
 
 export default {
   name: "dataset-form",
@@ -70,16 +69,10 @@ export default {
   data() {
     return {
       showContentsType: this.$store.state.showContentsType,
-      datasetPhase: String,
     };
   },
   components: {},
   computed: {
-    phaseDetail: function () {
-      return function (selectPhase) {
-        return phaseStatus(selectPhase);
-      };
-    },
     newDataset() {
       return this.$store.getters["datasetStore/newDataset"];
     },

@@ -76,7 +76,6 @@
 <script>
 import Loading from "../../components/parts/Loading.vue";
 import PageTransition from "../../components/parts/PageTransitionDataset.vue";
-import { phaseStatus } from "../../plugins/datasetPhase";
 
 export default {
   name: "dataset-form",
@@ -101,9 +100,6 @@ export default {
     };
   },
   computed: {
-    phaseDetail() {
-      return phaseStatus(this.newDataset.datasetPhase);
-    },
     newDataset() {
       // dataの値と一緒
       return this.$store.getters["datasetStore/newDataset"];
