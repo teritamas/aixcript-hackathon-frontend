@@ -1,44 +1,40 @@
 <template>
-    <div
-        class="dataset-status-badge-object font-bold"
-        :class="
-        isVoting
-            ? 'dataset-status-badge-voting'
-            : 'dataset-status-badge-vote-end'
-        "
-    >
-        {{ statusBadge }}
-    </div>
+  <div
+    class="dataset-status-badge-object font-bold"
+    :class="
+      isPurchasedOrOwn
+        ? 'dataset-status-badge-active'
+        : 'dataset-status-badge-de-active'
+    "
+  >
+    {{ statusBadge }}
+  </div>
 </template>
-
 
 <script>
 export default {
   name: "statusBadge",
-    props: {
+  props: {
     datasetOwnType: String,
-    datasetStatus: String,
   },
   computed: {
-    isVoting() {
-      // 提案が投票中の場合True
-      return this.datasetStatus === "voting";
+    isPurchasedOrOwn() {
+      // 購入済みまたは所有者の場合True
+      return (
+        this.datasetOwnType === "un_purchased" || this.datasetOwnType == "owner"
+      );
     },
     statusBadge() {
       // カードの右上のステータスバッジに掲載する内容
       let badge = "";
-      if (this.isVoting) {
-        if (this.datasetOwnType == "voted") {
-          badge = "投票済み";
-        } else if (this.datasetOwnType == "unvoted") {
-          badge = "投票できます！";
-        } else if (this.datasetOwnType == "owner") {
-          badge = "あなたの提案が投票中です！";
-        } else {
-          badge = "投票受付中です！";
-        }
+      if (this.datasetOwnType == "purchased") {
+        badge = "購入済み";
+      } else if (this.datasetOwnType == "un_purchased") {
+        badge = "購入できます";
+      } else if (this.datasetOwnType == "owner") {
+        badge = "あなたのアートが販売中です！";
       } else {
-        badge = "投票終了";
+        badge = "購入できます";
       }
       return badge;
     },
@@ -46,15 +42,7 @@ export default {
 };
 </script>
 
-<style lang=scss scoped>
-
-.dataset-status-badge-area {
-  position: relative;
-}
-.not-show-vote-result {
-  height: 90px;
-  padding: 15px;
-}
+<style lang="scss" scoped>
 .dataset-status-badge-object {
   position: absolute;
   top: 0px;
@@ -65,12 +53,12 @@ export default {
   border-radius: 0 0 10px 0;
 }
 
-.dataset-status-badge-voting {
+.dataset-status-badge-active {
   background: #ffca28;
   color: rgba(55, 65, 81, var(--tw-text-opacity));
 }
 
-.dataset-status-badge-vote-end {
+.dataset-status-badge-de-active {
   background: #939087;
   color: rgba(55, 65, 81, var(--tw-text-opacity));
 }

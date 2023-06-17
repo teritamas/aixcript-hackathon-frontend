@@ -5,14 +5,15 @@
   >
     <div v-for="dataset in datasets" :key="dataset.index" class="p-3 item">
       <DatasetCards
-        :datasetId="dataset.dataset_id"
+        :datasetId="dataset.datasetId"
         :description="dataset.description"
-        :fileName="dataset.file_name"
+        :fileName="dataset.fileName"
         :price="dataset.price"
         :tags="dataset.tags"
-        :purchasedUsers="dataset.purchased_users"
-        :createdAt="dataset.created_at"
-        :updatedAt="dataset.updated_at"
+        :purchasedUsers="dataset.purchasedUsers"
+        :datasetOwnType="dataset.datasetOwnType"
+        :createdAt="dataset.createdAt"
+        :updatedAt="dataset.updatedAt"
         :title="dataset.title"
       />
     </div>

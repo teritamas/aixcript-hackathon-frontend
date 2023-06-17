@@ -103,7 +103,7 @@
 
 <script>
 import DatasetInfo from "../../components/datasetDetails/DatasetInfo.vue";
-import VotersCommentList from "../../components/parts/VotersCommentList.vue";
+import PurchasedCommentList from "../../components/parts/PurchasedCommentList.vue";
 import DatasetVoteStatus from "../../components/datasetDetails/DatasetVoteStatus.vue";
 import { debounce } from "lodash";
 import Loading from "../../components/parts/Loading.vue";
@@ -123,7 +123,7 @@ export default {
     DatasetInfo,
     DatasetVoteStatus,
     Loading,
-    VotersCommentList,
+    PurchasedCommentList,
     PageTransition,
     Congratulation,
     DatasetStatusBadge,
