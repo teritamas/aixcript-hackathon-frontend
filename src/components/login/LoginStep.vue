@@ -4,7 +4,7 @@
       <div class="bg-dark-blue">
         <h3 class="title pb-5 pt-10 text-white">ご利用までの３ステップ</h3>
         <div class="desc text-white">
-          イノベーションサポートをご利用いただくには、<br />
+          本アプリをご利用いただくには、<br />
           MetaMaskのアカウント作成とログインが必要です。
         </div>
         <div class="sankaku1"></div>
@@ -260,7 +260,6 @@
         <div v-if="!detail.userName" class="desc">
           <p class="p-1">
             システム上で利用するニックネームを登録してください。<br />
-            ニックネームはあとから変更することもできます。
           </p>
           <div class="text-center inline-block my-2">
             <input
