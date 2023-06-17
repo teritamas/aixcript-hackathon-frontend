@@ -2,7 +2,7 @@
   <div class="form">
     <div class="form-item">
       <p class="form-item-label">
-        <span class="form-item-label-required">必須</span>画像（PDF）
+        <span class="form-item-label-required">必須</span>画像（JPG or PNG）
       </p>
       <div v-show="!newDataset.filePath" class="form-item-input-file">
         <label class="border file mt-2 input-item__label"
