@@ -1,5 +1,5 @@
 <template>
-  <footer class="text-gray-600 body-font fixed bottom-2 shadow w-full">
+  <footer class="bg-main text-gray-600 body-font fixed bottom-2 shadow w-full">
     <div class="bg-footer grid grid-cols-3">
       <router-link class="footer-item block text-gray-500" to="/dataset">
         <div class="p-1 py-2 grid justify-items-center">
