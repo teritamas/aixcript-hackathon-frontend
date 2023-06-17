@@ -1,31 +1,26 @@
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="max-width: 1200px; margin: 0 auto;">
-    <div
-      v-for="dataset in datasetLists"
-      :key="dataset.index"
-      class="p-3 item"
-    >
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+    style="max-width: 1200px; margin: 0 auto"
+  >
+    <div v-for="dataset in datasets" :key="dataset.index" class="p-3 item">
       <DatasetCards
-        :datasetId="dataset.datasetId"
-        :title="dataset.title"
+        :datasetId="dataset.dataset_id"
         :description="dataset.description"
-        :filePath="dataset.filePath"
-        :targetAmount="dataset.targetAmount"
-        :isRecruitingTeammates="dataset.isRecruitingTeammates"
-        :createdAt="dataset.createdAt"
+        :fileName="dataset.file_name"
+        :price="dataset.price"
         :tags="dataset.tags"
-        :datasetOwnType="dataset.datasetOwnType"
-        :datasetStatus="dataset.datasetStatus"
-        :nftTokenId="dataset.nft_token_id"
-        :fundraisingCondition="dataset.datasetFundraisingCondition"
-        :voteList="dataset.votes"
+        :purchasedUsers="dataset.purchased_users"
+        :createdAt="dataset.created_at"
+        :updatedAt="dataset.updated_at"
+        :title="dataset.title"
       />
     </div>
   </div>
 </template>
 
 <script>
-import DatasetCards from "../../components/DatasetCards.vue";
+import DatasetCards from "../../components/common/DatasetCards.vue";
 
 export default {
   name: "proposa-list",
@@ -36,17 +31,17 @@ export default {
     return {};
   },
   computed: {
-    datasetLists() {
-      return this.$store.getters["datasetStore/datasetLists"];
+    datasets() {
+      return this.$store.getters["datasetStore/datasets"];
     },
   },
   created() {
     // メソッドを実行する
-    this.getDatasetLists();
+    this.getDatasets();
   },
   methods: {
-    getDatasetLists() {
-      this.$store.dispatch("datasetStore/getDatasetList").then(() => {});
+    getDatasets() {
+      this.$store.dispatch("datasetStore/getDatasets").then(() => {});
     },
   },
 };
