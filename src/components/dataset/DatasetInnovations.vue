@@ -41,6 +41,69 @@
           ファイルを選びなおす
         </div>
       </div>
+      <div class="validation-result-area">
+        <div>
+          <h3>検出されたタグ</h3>
+          <div>{{ validateResult.bestGuessLabels }}</div>
+        </div>
+
+        <div class="bg-red-100 rounded-lg shadow-lg p-6">
+          <h3>完全一致した画像</h3>
+          <div v-if="validateResult.fullMathUrl.length === 0">なし: OK</div>
+          <div v-else class="grid grid-cols-3 justify-items-center">
+            <div
+              class="justify-items-center"
+              v-for="(url, index) in validateResult.fullMathUrl"
+              :key="url"
+            >
+              <img
+                :src="url"
+                alt="image"
+                class="rounded-lg shadow-lg h-auto w-24"
+              />
+              <a :href="url">一致した画像.{{ index }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-yellow-100 rounded-lg shadow-lg p-6">
+          <h3>部分一致</h3>
+          <div v-if="validateResult.partialMathUrls.length === 0">なし: OK</div>
+          <div class="grid grid-cols-3 justify-items-center">
+            <div
+              class="justify-items-center"
+              v-for="(url, index) in validateResult.partialMathUrls"
+              :key="url"
+            >
+              <img
+                :src="url"
+                alt="image"
+                class="rounded-lg shadow-lg h-auto w-24"
+              />
+              <a :href="url">部分一致した画像.{{ index }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-blue-100 rounded-lg shadow-lg p-6">
+          <h3>似ている画像</h3>
+          <div v-if="validateResult.similarUrls.length === 0">なし: OK</div>
+          <div v-else class="grid grid-cols-3 justify-items-center">
+            <div
+              class="justify-items-center"
+              v-for="(url, index) in validateResult.similarUrls"
+              :key="url"
+            >
+              <img
+                :src="url"
+                alt="image"
+                class="rounded-lg shadow-lg h-auto w-24"
+              />
+              <a :href="url">類似した画像.{{ index }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="form-item">
@@ -79,6 +142,9 @@ export default {
     file() {
       return this.$store.getters["datasetStore/file"];
     },
+    validateResult() {
+      return this.$store.getters["datasetStore/validateResult"];
+    },
   },
   validations() {
     return {
@@ -88,13 +154,15 @@ export default {
       },
     };
   },
-  created() {},
   methods: {
     onFileChange(e) {
       const files = e.target.files || e.dataTransfer.files;
       this.setDatasetAttachmentFile(files[0]);
       this.createImage(files[0]);
       this.newDataset.file = files[0]; // いらないかも
+
+      // アップロード後画像を検証する
+      this.validateDataset();
     },
     setDatasetAttachmentFile(file) {
       this.$store.dispatch("datasetStore/storeFile", file).then(() => {});
@@ -110,6 +178,13 @@ export default {
     remove() {
       this.newDataset.filePath = false;
     },
+    validateDataset() {
+      // validationAPIをリクエストし画像を検証する
+      this.$store
+        .dispatch("datasetStore/validateDataset", this.newDataset)
+        .then(() => {});
+    },
+
     registerDataset() {
       this.$store
         .dispatch("datasetStore/registerDataset", this.newDataset)

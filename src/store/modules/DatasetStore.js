@@ -12,8 +12,19 @@ export default {
     },
     datasetLists: "",
     dataset: {},
+    validateResult: {
+      bestGuessLabels: "",
+      fullMathUrl: [],
+      isRegisterable: false,
+      partialMathUrls: [],
+      similarUrls: [],
+      tags: [],
+    },
   },
   getters: {
+    validateResult(state) {
+      return state.validateResult;
+    },
     registeredDatasetId(state) {
       return state.registeredDatasetId;
     },
@@ -51,6 +62,9 @@ export default {
     },
     setDatasetAttachmentFile(state, commit) {
       state.datasetAttachmentFile = commit;
+    },
+    setValidateResult(state, commit) {
+      state.validateResult = commit;
     },
   },
   actions: {
@@ -121,6 +135,26 @@ export default {
     },
     storeFile(state, commit) {
       state.commit("setDatasetAttachmentFile", commit);
+    },
+    validateDataset(state, commit) {
+      const client = applyCaseMiddleware(axios.create());
+      const termRequestUri = process.env.VUE_APP_API_ENDPOINT + "validate";
+      const form = new FormData();
+      form.append("file", commit.file);
+      return client
+        .post(termRequestUri, form, {
+          headers: {
+            Authorization: state.getters.token,
+            "Content-Type": "multipart/form-data",
+            accept: "application/json",
+          },
+        })
+        .then((response) => {
+          state.commit("setValidateResult", response.data);
+        })
+        .catch((err) => {
+          (this.errored = true), (this.error = err);
+        });
     },
     registerDataset(state, commit) {
       console.log(commit);
