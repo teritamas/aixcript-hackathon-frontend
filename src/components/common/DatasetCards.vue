@@ -10,8 +10,8 @@
         @error="imageError = true"
       />
       <DatasetStatusBadge
+        v-if="datasetOwnType"
         :datasetOwnType="datasetOwnType"
-        :datasetStatus="datasetStatus"
       />
     </div>
     <h4
