@@ -8,16 +8,6 @@
     <MyDatasets v-if="token" :token="token" class="md:col-span-2" />
     <MyVotes v-if="token" :token="token" class="md:col-span-2" />
     <MyGifts v-if="token" :token="token" />
-    <div v-if="token" class="md:col-span-3">
-      <div v-for="contract in contracts" :key="contract.index">
-        <button
-          @click="registerMetamask(contract)"
-          class="text-center form-btn mb-1"
-        >
-          トークンをMetamaskと連携
-        </button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -38,16 +28,10 @@ export default {
   data() {
     return {};
   },
-  created() {
-    // this.$store.dispatch("web3Store/getWeb3Info").then(() => {});
-  },
+  created() {},
   computed: {
     token() {
       return this.$store.getters["userStore/token"];
-    },
-    contracts() {
-      const contracts = this.$store.getters["web3Store/getContracts"];
-      return contracts.filter((m) => m.type == "ERC20");
     },
   },
   methods: {
