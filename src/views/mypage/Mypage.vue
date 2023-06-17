@@ -5,9 +5,8 @@
     style="max-width: 1200px; margin: 0 auto"
   >
     <MyProfile v-if="token" :token="token" />
-    <MyDatasets v-if="token" :token="token" class="md:col-span-2" />
-    <MyVotes v-if="token" :token="token" class="md:col-span-2" />
-    <MyGifts v-if="token" :token="token" />
+    <MyDatasets v-if="token" :detail="detail" class="md:col-span-2" />
+    <MyPurchasedDatasets v-if="token" :detail="detail" class="md:col-span-2" />
   </div>
 </template>
 
@@ -15,7 +14,7 @@
 import LoginStep from "../../components/login/LoginStep.vue";
 import MyProfile from "../../components/mypage/MyProfile.vue";
 import MyDatasets from "../../components/mypage/MyDatasets.vue";
-import MyVotes from "../../components/mypage/MyVotes.vue";
+import MyPurchasedDatasets from "../../components/mypage/MyPurchasedDatasets.vue";
 
 export default {
   name: "MyPage",
@@ -23,15 +22,20 @@ export default {
     MyProfile,
     MyDatasets,
     LoginStep,
-    MyVotes,
+    MyPurchasedDatasets,
   },
   data() {
     return {};
   },
-  created() {},
+  created() {
+    this.$store.dispatch("userStore/getDetail", this.token).then(() => {});
+  },
   computed: {
     token() {
       return this.$store.getters["userStore/token"];
+    },
+    detail() {
+      return this.$store.getters["userStore/detail"];
     },
   },
   methods: {
