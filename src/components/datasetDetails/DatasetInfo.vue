@@ -24,7 +24,7 @@
   </div>
   <div class="form-item">
     <p class="form-item-label"><span class="form-item-list"></span>金額</p>
-    <p>{{ dataset.price }}円</p>
+    <p>{{ dataset.price }}pts</p>
   </div>
 </template>
 

@@ -26,17 +26,17 @@
         <path d="M12 17h6.2" />
         <path d="M12 14h8" />
       </svg>
-      <span>ART TECH GUARDIANS</span>
+      <span>Lit Art Market</span>
       <div v-if="token" class="items-center" @click="getDetail()">
         <router-link
           to="/mypage"
-          class="flex text-sm text-gray-600 font-medium dark:text-blue-500 hover:underline"
+          class="flex text-sm text-white font-medium hover:underline"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            class="w-6 h-6 mr-2 text-gray-600"
+            class="w-6 h-6 mr-2 text-white"
           >
             <path
               fill-rule="evenodd"
@@ -50,7 +50,7 @@
       <div v-if="!token" class="items-center">
         <router-link
           to="/mypage"
-          class="flex text-sm text-white font-medium dark:text-blue-500 hover:underline"
+          class="flex text-sm text-white font-medium hover:underline"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@
               clip-rule="evenodd"
             />
           </svg>
-          <span class="text-small">ログイン</span>
+          <span class="text-small text-white">ログイン</span>
         </router-link>
       </div>
     </div>

@@ -1,4 +1,7 @@
 <template>
+  <div class="w-9/12 m-auto text-center">
+    <SearchBar />
+  </div>
   <div
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-auto"
     style="max-width: 1200px"
@@ -41,6 +44,7 @@ import DatasetCards from "../../components/common/DatasetCards.vue";
 import DatasetDetailModal from "../../components/common/DatasetDetailModal.vue";
 import Loading from "../../components/parts/Loading.vue";
 import Purchased from "../../components/parts/Purchased.vue";
+import SearchBar from "@/components/lists/SearchBar.vue";
 
 export default {
   name: "proposa-list",
@@ -49,6 +53,7 @@ export default {
     DatasetDetailModal,
     Loading,
     Purchased,
+    SearchBar,
   },
   data() {
     return {

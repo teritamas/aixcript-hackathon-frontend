@@ -32,7 +32,7 @@
         <div class="text-gray-700 text-bold mb-1">
           金額
           <span class="text-lg font-bold">{{ price }}</span>
-          円
+          pts
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <div class="content-center">
     <div class="card card-one glass mt-10">
       <div class="bg-dark-blue">
-        <h2 class="text-center pt-5 pb-5 text-white">画像登録</h2>
+        <h2 class="text-center pt-5 pb-5 text-white">登録</h2>
       </div>
       <DatasetRegister
         @showLoading="showLoading"
