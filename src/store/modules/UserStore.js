@@ -27,7 +27,7 @@ export default {
       return state.account;
     },
     walletAddress(state) {
-      return state.detail.walletAddress;
+      return state.metamask.walletAddress;
     },
     hasBrowserExtension(state) {
       return state.hasBrowserExtension;

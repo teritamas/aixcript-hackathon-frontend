@@ -323,9 +323,6 @@ export default {
   },
   mounted() {},
   methods: {
-    handleAccountChanged() {
-      this.initializeAccount();
-    },
     async initializeAccount() {
       try {
         const account = await window.ethereum.request({
@@ -342,12 +339,11 @@ export default {
         } else {
           console.error(err);
         }
+        console.log("bbbb");
+
         return "";
       }
-      //await this.getWalletAddress();
-      //await this.getChainID(); うまくいかないのでいったんコメントアウト
     },
-    // storeのactionsをたたきにいく
     getWalletAddress(walletAddress) {
       this.$store
         .dispatch("userStore/getWalletAddress", {
@@ -357,7 +353,7 @@ export default {
           this.$store
             .dispatch("userStore/getDetailByWalletAddress", { walletAddress })
             .then(() => {
-              if (this.token !== undefined) {
+              if (this.token !== undefined && this.token !== "") {
                 this.getDetail();
               }
             });
