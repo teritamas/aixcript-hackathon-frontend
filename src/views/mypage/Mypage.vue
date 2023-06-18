@@ -25,6 +25,28 @@
         </svg>
         購入したデータセットの一括ダウンロード
       </button>
+      <p class="m-1">または</p>
+      <button
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+        @click="downloadCopy"
+      >
+        <svg
+          class="w-4 h-4 mr-2"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+
+        <span>curlコマンドで取得</span>
+      </button>
     </div>
     <MyProfile :detail="detail" />
     <MyPurchasedDatasets :detail="detail" class="md:col-span-2" />
@@ -59,8 +81,27 @@ export default {
     detail() {
       return this.$store.getters["userStore/detail"];
     },
+    curlCmd() {
+      return (
+        "curl -X 'GET' \
+'https://aixcript-hackathon-server-ez5q3zuvrq-an.a.run.app/download/" +
+        this.detail.walletAddress +
+        "' \
+--output download.zip"
+      );
+    },
   },
   methods: {
+    downloadCopy() {
+      this.$copyText(this.curlCmd).then(
+        function () {
+          alert("curlコマンドがコピーされました");
+        },
+        function () {
+          alert("コピーに失敗しました");
+        }
+      );
+    },
     download() {
       this.$store.dispatch("userStore/downloadDataset").then(() => {});
     },
