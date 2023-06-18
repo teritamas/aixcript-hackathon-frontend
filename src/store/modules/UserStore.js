@@ -27,7 +27,7 @@ export default {
       return state.account;
     },
     walletAddress(state) {
-      return state.metamask.walletAddress;
+      return state.detail.walletAddress;
     },
     hasBrowserExtension(state) {
       return state.hasBrowserExtension;
@@ -130,6 +130,34 @@ export default {
         .then((response) => {
           state.commit("setToken", response.data.userId, { root: true });
           state.commit("setUserId", response.data.userId);
+        })
+        .catch((err) => {
+          (this.errored = true), (this.error = err);
+        });
+    },
+    downloadDataset(state) {
+      const client = applyCaseMiddleware(axios.create());
+      console.log(state.detail);
+      const termRequestUri =
+        process.env.VUE_APP_API_ENDPOINT +
+        "download/" +
+        state.getters.walletAddress;
+      return client
+        .get(termRequestUri, {
+          withCredentials: false,
+          headers: {
+            Authorization: state.getters.token,
+          },
+          responseType: "blob",
+        })
+        .then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "dataset.zip");
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode.removeChild(link);
         })
         .catch((err) => {
           (this.errored = true), (this.error = err);

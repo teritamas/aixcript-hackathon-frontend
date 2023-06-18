@@ -9,6 +9,7 @@
       <button
         type="button"
         class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        @click="download()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,35 +61,8 @@ export default {
     },
   },
   methods: {
-    async registerMetamask(contract) {
-      const type = contract.type;
-      const tokenAddress = contract.address;
-      const tokenSymbol = contract.symbol;
-      const tokenDecimals = contract.decimals;
-      const tokenImage = contract.image;
-
-      try {
-        const wasAdded = await window.ethereum.request({
-          method: "wallet_watchAsset",
-          params: {
-            type: type, // Initially only supports ERC20, but eventually more!
-            options: {
-              address: tokenAddress,
-              symbol: tokenSymbol,
-              decimals: tokenDecimals,
-              image: tokenImage,
-            },
-          },
-        });
-
-        if (wasAdded) {
-          console.log("Thanks for your interest!");
-        } else {
-          console.log("Your loss!");
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    download() {
+      this.$store.dispatch("userStore/downloadDataset").then(() => {});
     },
   },
 };
