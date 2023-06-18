@@ -11,7 +11,8 @@
       <div class="stats px-5">
         <div class="stat text-center">
           <i>保有トークン</i>
-          <i class="grid">{{ exchangeableToken }}<span>pts</span></i>
+          <i class="grid">{{ detail.deposit }}<span>pts</span></i>
+          <span>※購入後残高の反映に1分ほど時間がかかります</span>
         </div>
       </div>
       <div class="stats px-5">

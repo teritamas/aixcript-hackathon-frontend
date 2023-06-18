@@ -18,7 +18,7 @@
               clip-rule="evenodd"
             />
           </svg>
-          <small>データセット登録</small>
+          <small>登録</small>
         </div>
       </router-link>
       <router-link class="footer-item block text-gray-500" to="/lists">
