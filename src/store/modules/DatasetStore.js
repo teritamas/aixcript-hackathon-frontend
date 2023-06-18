@@ -132,7 +132,6 @@ export default {
         });
     },
     registerDataset(state, commit) {
-      console.log(commit);
       const termRequestUri = process.env.VUE_APP_API_ENDPOINT + "dataset";
       const client = applyCaseMiddleware(axios.create());
       const form = new FormData();
@@ -159,7 +158,6 @@ export default {
         });
     },
     purchaseDataset(state, commit) {
-      console.log(commit);
       const client = applyCaseMiddleware(axios.create());
       const termRequestUri =
         process.env.VUE_APP_API_ENDPOINT +

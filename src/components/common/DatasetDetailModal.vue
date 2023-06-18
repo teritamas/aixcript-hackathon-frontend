@@ -62,18 +62,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      openCongratulationPop: true,
-      loadingText: [
-        {
-          checkTarget: "voted-check",
-          label: "購入完了",
-        },
-        {
-          checkTarget: "token-check",
-          label: "トークン作成完了",
-        },
-      ],
       judgement: "",
       judgementReason: "",
       PageTransition: false,
@@ -118,15 +106,14 @@ export default {
       let checkbox = document.getElementById(checkTarget);
       checkbox.checked = true;
     },
-    popClose() {
-      this.openCongratulationPop = false;
-    },
     purchaseDataset() {
       if (this.purchasedButtonDisabled) {
         // 無効化されている時は何もしない
         console.warn("購入できるユーザでないので購入できません");
         return;
       }
+
+      this.$emit("showLoading");
       this.$store
         .dispatch("datasetStore/purchaseDataset", {
           datasetId: this.dataset.datasetId,
@@ -134,6 +121,11 @@ export default {
         .then(() => {
           this.$emit("getDatasets");
         });
+      setTimeout(() => {
+        this.$emit("hiddenLoading");
+        this.$emit("showPurchasedPop");
+      }, 5000);
+      return false;
     },
   },
 };

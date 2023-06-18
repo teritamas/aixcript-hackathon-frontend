@@ -1,9 +1,7 @@
 import { createStore } from "vuex";
 import DatasetStore from "./modules/DatasetStore";
 import UserStore from "./modules/UserStore";
-import DisplayStore from "./modules/DisplayStore";
 import createPersistedState from "vuex-persistedstate";
-import DatasetVoteStore from "./modules/DatasetVoteStore";
 
 export default createStore({
   plugins: [
@@ -40,7 +38,5 @@ export default createStore({
   modules: {
     datasetStore: DatasetStore,
     userStore: UserStore,
-    displayStore: DisplayStore,
-    datasetVoteStore: DatasetVoteStore,
   },
 });
