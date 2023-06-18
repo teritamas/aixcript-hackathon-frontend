@@ -9,6 +9,7 @@
       <button
         type="button"
         class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        @click="download()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -23,6 +24,28 @@
           />
         </svg>
         購入したデータセットの一括ダウンロード
+      </button>
+      <p class="m-1">または</p>
+      <button
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+        @click="downloadCopy"
+      >
+        <svg
+          class="w-4 h-4 mr-2"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+
+        <span>curlコマンドで取得</span>
       </button>
     </div>
     <MyProfile :detail="detail" />
@@ -58,37 +81,29 @@ export default {
     detail() {
       return this.$store.getters["userStore/detail"];
     },
+    curlCmd() {
+      return (
+        "curl -X 'GET' \
+'https://aixcript-hackathon-server-ez5q3zuvrq-an.a.run.app/download/" +
+        this.detail.walletAddress +
+        "' \
+--output download.zip"
+      );
+    },
   },
   methods: {
-    async registerMetamask(contract) {
-      const type = contract.type;
-      const tokenAddress = contract.address;
-      const tokenSymbol = contract.symbol;
-      const tokenDecimals = contract.decimals;
-      const tokenImage = contract.image;
-
-      try {
-        const wasAdded = await window.ethereum.request({
-          method: "wallet_watchAsset",
-          params: {
-            type: type, // Initially only supports ERC20, but eventually more!
-            options: {
-              address: tokenAddress,
-              symbol: tokenSymbol,
-              decimals: tokenDecimals,
-              image: tokenImage,
-            },
-          },
-        });
-
-        if (wasAdded) {
-          console.log("Thanks for your interest!");
-        } else {
-          console.log("Your loss!");
+    downloadCopy() {
+      this.$copyText(this.curlCmd).then(
+        function () {
+          alert("curlコマンドがコピーされました");
+        },
+        function () {
+          alert("コピーに失敗しました");
         }
-      } catch (error) {
-        console.log(error);
-      }
+      );
+    },
+    download() {
+      this.$store.dispatch("userStore/downloadDataset").then(() => {});
     },
   },
 };

@@ -169,10 +169,25 @@
 
     <button
       class="form-btn mb-10"
-      :disabled="v$.$invalid || isForbiddenFromAiJudgment"
+      v-if="isForbiddenFromAiJudgment"
+      :disabled="v$.$invalid"
+      :class="v$.$invalid ? 'opacity-50 cursor-not-allowed' : ''"
       @click="registerDataset()"
     >
-      保存する
+      自身の所有物なので<br />このまま登録する
+    </button>
+    <button
+      v-else
+      class="form-btn mb-10"
+      :disabled="v$.$invalid || isForbiddenFromAiJudgment"
+      :class="
+        v$.$invalid || isForbiddenFromAiJudgment
+          ? 'opacity-50 cursor-not-allowed'
+          : ''
+      "
+      @click="registerDataset()"
+    >
+      登録
     </button>
   </div>
 </template>
