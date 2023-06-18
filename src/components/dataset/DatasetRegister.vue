@@ -81,7 +81,7 @@
           <h3>完全一致した画像</h3>
           <div v-if="validateResult.fullMathUrl.length === 0">なし: OK</div>
           <div v-else>
-            <span>著作権違反の可能性があるので投稿できません</span>
+            <span>著作権違反の可能性があります。</span>
             <div class="grid grid-cols-3 justify-items-center">
               <div
                 class="justify-items-center text-center"
