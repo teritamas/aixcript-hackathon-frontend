@@ -1,5 +1,5 @@
 <template>
-  <div class="w-9/12 m-auto text-center">
+  <div class="w-11/12 md:w-9/12 m-auto text-center">
     <SearchBar />
   </div>
   <div
