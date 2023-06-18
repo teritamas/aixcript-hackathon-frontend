@@ -4,28 +4,39 @@
       <div class="bg-dark-blue">
         <h2 class="text-center pt-5 pb-5 text-white">画像登録</h2>
       </div>
-      <DatasetInnovations v-if="showContentsType === 'dataset'" />
+      <DatasetRegister
+        @showLoading="showLoading"
+        @hiddenLoading="hiddenLoading"
+        @showSavedPop="showSavedPop"
+      />
     </div>
     <PageTransitionRequiredLogin
       v-show="token == ''"
       :headerMessage="'画像を登録する場合はログインをしてください'"
     ></PageTransitionRequiredLogin>
   </div>
+  <Loading v-show="loading" />
+  <Saved @popClose="popClose" v-show="openSavedPop" />
 </template>
 
 <script>
-import DatasetInnovations from "../../components/dataset/DatasetInnovations.vue";
+import DatasetRegister from "../../components/dataset/DatasetRegister.vue";
 import PageTransitionRequiredLogin from "../../components/parts/PageTransitionRequiredLogin.vue";
+import Loading from "../../components/parts/Loading.vue";
+import Saved from "../../components/dataset/Saved.vue";
 
 export default {
   name: "dataset-form",
   components: {
-    DatasetInnovations,
+    DatasetRegister,
     PageTransitionRequiredLogin,
+    Saved,
+    Loading,
   },
   data() {
     return {
-      showContentsType: this.$store.state.showContentsType,
+      loading: false,
+      openSavedPop: false,
     };
   },
   computed: {
@@ -34,10 +45,6 @@ export default {
     },
   },
   methods: {
-    showConfirmView: function () {
-      this.setNewDataset();
-      this.$router.push("/datasetConfirm");
-    },
     setNewDataset: function () {
       this.$store.commit("setNewDataset", this.newDataset);
     },
@@ -56,6 +63,19 @@ export default {
     },
     remove() {
       this.newDataset.filePath = false;
+    },
+    showLoading() {
+      this.loading = true;
+    },
+    hiddenLoading() {
+      this.loading = false;
+    },
+    showSavedPop() {
+      this.openSavedPop = true;
+    },
+    popClose() {
+      this.openSavedPop = false;
+      this.loading = false;
     },
   },
 };

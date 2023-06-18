@@ -2,14 +2,14 @@
   <div class="full-view">
     <div class="card glass bg-dark-blue">
       <div class="bg-dark-blue">
-        <h3 class="text-white font-bold text-center py-10">購入しました</h3>
+        <h3 class="text-white font-bold text-center py-10">保存しました</h3>
       </div>
       <div class="bg-dark-blue pb-10">
         <router-link
           class="mb-1 form-btn btn-font text-center text-gray-600 m-auto"
-          to="/mypage"
+          to="/lists"
         >
-          マイページでデータセットを確認
+          一覧画面でデータセットを確認
         </router-link>
         <div
           class="mt-1 form-return-btn btn-font text-center text-gray-600"
@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "loading-",
+  name: "saved-modal",
   data() {
     return {
       copy: "",

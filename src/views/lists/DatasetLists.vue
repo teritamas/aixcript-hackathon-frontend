@@ -1,7 +1,7 @@
 <template>
   <div
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-    style="max-width: 1200px; margin: 0 auto"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-auto"
+    style="max-width: 1200px"
   >
     <div
       v-for="dataset in datasets"
@@ -27,9 +27,12 @@
       :dataset="targetModal"
       @modalOn="modalOn"
       @getDatasets="getDatasets"
+      @showLoading="showLoading"
+      @hiddenLoading="hiddenLoading"
+      @showPurchasedPop="showPurchasedPop"
     />
     <Loading v-show="loading" />
-    <Purchased @popClose="popClose" v-show="showPurchased" />
+    <Purchased @popClose="popClose" v-show="openPurchasedPop" />
   </div>
 </template>
 
@@ -65,9 +68,6 @@ export default {
         this.datasetOwnType === "un_purchased" || this.datasetOwnType == "owner"
       );
     },
-    showPurchased() {
-      return this.openPurchasedPop && this.isPurchasedOrOwn;
-    },
   },
   created() {
     // メソッドを実行する
@@ -78,9 +78,23 @@ export default {
       this.$store.dispatch("datasetStore/getDatasets").then(() => {});
     },
     modalOn(dataset) {
-      console.log(dataset);
       this.isOpenDetailModal = !this.isOpenDetailModal;
       this.targetModal = dataset;
+    },
+    showLoading() {
+      this.loading = true;
+    },
+    hiddenLoading() {
+      this.loading = false;
+    },
+    showPurchasedPop() {
+      this.openPurchasedPop = true;
+    },
+    popClose() {
+      this.openPurchasedPop = false;
+      this.loading = false;
+      this.isOpenDetailModal = false;
+      this.getDatasets();
     },
   },
 };

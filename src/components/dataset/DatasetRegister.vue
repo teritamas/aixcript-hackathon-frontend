@@ -253,9 +253,15 @@ export default {
         .then(() => {});
     },
     registerDataset() {
+      this.$emit("showLoading");
       this.$store
         .dispatch("datasetStore/registerDataset", this.newDataset)
         .then(() => {});
+      setTimeout(() => {
+        this.$emit("hiddenLoading");
+        this.$emit("showSavedPop");
+      }, 5000);
+      return false;
     },
   },
 };
