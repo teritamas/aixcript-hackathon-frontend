@@ -19,7 +19,7 @@ LIT ART MARKET は下記のような構成になっています。
 
 - [GitHub - teritamas/lit-art-market-server](https://github.com/teritamas/lit-art-market-server)
 
-## Qick Start
+## Quick Start
 
 ### 1. 必要ライブラリのインストール
 
