@@ -17,7 +17,7 @@ LIT ART MARKET は下記のような構成になっています。
 上記の全体構成のうち、フロントエンドが本リポジトリの担当範囲です。  
 フロントエンド以外のバックエンドは、下記のリポジトリで構築されています。
 
-- [GitHub - teritamas/innovation-support-server](https://github.com/teritamas/innovation-support-server)
+- [GitHub - teritamas/lit-art-market-server](https://github.com/teritamas/lit-art-market-server)
 
 ## Qick Start
 
